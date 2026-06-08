@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-dub-detector"
+version = "0.1.0"
+description = "Local AI voice-over suspicion checker for videos and audio files."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "Eric Wen" }
+]
+keywords = ["audio", "deepfake", "tts", "voice", "telegram", "ffmpeg"]
+dependencies = [
+  "numpy>=1.23",
+  "soundfile>=0.12",
+  "torch>=2.1",
+  "transformers>=4.39",
+  "urllib3<2"
+]
+
+[project.optional-dependencies]
+telegram = [
+  "python-telegram-bot>=21,<22"
+]
+dev = [
+  "pytest>=7.4",
+  "ruff>=0.6"
+]
+
+[project.scripts]
+ai-dub-detector = "ai_dub_detector.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ai_dub_detector*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["UP006", "UP007"]

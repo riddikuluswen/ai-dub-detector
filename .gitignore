@@ -1,0 +1,28 @@
+.DS_Store
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+ai_dub_detector.egg-info/
+
+# Local runtime data
+_work/
+downloads/
+reports/
+*.wav
+*.mp4
+*.mov
+*.m4a
+*.mp3
+*.ogg
+*.webm
+
+# Model caches are large and should stay local
+.cache/
+huggingface/
