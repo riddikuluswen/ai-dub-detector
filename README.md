@@ -19,6 +19,7 @@
 - 模型推理：Hugging Face `transformers`
 - 默认模型：`Hemgg/Deepfake-audio-detection`
 - Telegram bot：可选功能，使用长轮询，不需要公网 IP
+- 模型缓存：默认放在项目内 `.cache/huggingface`
 
 默认模型主要基于英文数据训练。它可以跑中文音频，但结果只能当筛查信号。后续更适合接入 VoiceWukong / ADD / Codecfake 相关模型或自己微调的中文模型。
 
@@ -99,6 +100,8 @@ ai-dub-detector telegram
 ```
 
 手机 Telegram 给 bot 发送视频、语音、音频文件即可。
+
+默认临时文件在项目内 `_work/`，模型下载缓存在项目内 `.cache/huggingface`。这两个目录都不会提交到 GitHub。
 
 如果只允许自己的 Telegram 账号使用，设置：
 

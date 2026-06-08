@@ -4,6 +4,7 @@ from typing import Optional
 
 from .media import extract_audio, probe_duration
 from .model import DEFAULT_MODEL_ID, AudioDeepfakeModel
+from .paths import DEFAULT_TMP_DIR
 from .segmentation import detect_active_segments, load_audio, slice_segment
 from .types import AnalysisResult, SegmentScore
 
@@ -22,7 +23,8 @@ def analyze_file(
 
     media_duration = probe_duration(input_path)
 
-    with tempfile.TemporaryDirectory(prefix="ai-dub-detector-") as tmpdir:
+    DEFAULT_TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="ai-dub-detector-", dir=DEFAULT_TMP_DIR) as tmpdir:
         wav_path = keep_wav or Path(tmpdir) / "audio.wav"
         extract_audio(input_path, wav_path, max_duration=max_duration)
 

@@ -79,5 +79,7 @@ JSON 报告：
 
 - 默认所有分析在本机完成。
 - Telegram 文件会短暂保存到本地工作目录。
+- 模型缓存默认保存在项目内 `.cache/huggingface`。
+- 分析过程中的临时 wav 默认保存在项目内 `_work/tmp`，任务结束后删除。
 - `.env` 不能提交到 GitHub。
 - 可用 `AI_DUB_ALLOWED_USER_IDS` 限制使用者。

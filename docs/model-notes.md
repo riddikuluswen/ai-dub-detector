@@ -37,6 +37,12 @@ ai-dub-detector analyze sample.mp4 --model-id your-org/your-model
 AI_DUB_MODEL_ID=your-org/your-model
 ```
 
+模型文件默认下载到项目内：
+
+```text
+.cache/huggingface
+```
+
 ## 看模型标签
 
 JSON 报告里有 `model_labels` 和每段的 `raw_scores`。换模型后先看这两个字段，确认哪一类代表 fake。

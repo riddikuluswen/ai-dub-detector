@@ -29,6 +29,12 @@ ai_dub_detector.analyzer
 8. 聚合片段分数。
 9. 输出文本或 JSON。
 
+默认运行数据都留在项目目录：
+
+- 模型缓存：`.cache/huggingface`
+- Telegram 下载和工作目录：`_work/`
+- 临时抽音频目录：`_work/tmp`
+
 ## Telegram bot
 
 Telegram 入口只负责通信：

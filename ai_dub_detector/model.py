@@ -1,5 +1,7 @@
 import numpy as np
 
+from .paths import DEFAULT_CACHE_DIR
+
 DEFAULT_MODEL_ID = "Hemgg/Deepfake-audio-detection"
 
 
@@ -16,8 +18,15 @@ class AudioDeepfakeModel:
 
             self.torch = torch
             self.device = _pick_device(torch, device)
-            self.extractor = AutoFeatureExtractor.from_pretrained(model_id)
-            self.model = AutoModelForAudioClassification.from_pretrained(model_id)
+            DEFAULT_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            self.extractor = AutoFeatureExtractor.from_pretrained(
+                model_id,
+                cache_dir=str(DEFAULT_CACHE_DIR),
+            )
+            self.model = AutoModelForAudioClassification.from_pretrained(
+                model_id,
+                cache_dir=str(DEFAULT_CACHE_DIR),
+            )
         except Exception as exc:  # pragma: no cover - depends on network/model cache
             raise ModelLoadError(f"模型加载失败: {model_id}. 原因: {exc}") from exc
 
