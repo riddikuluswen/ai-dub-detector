@@ -77,6 +77,13 @@ ai-dub-detector analyze ./sample.mp4 --model-id Hemgg/Deepfake-audio-detection
 ai-dub-detector analyze ./sample.mp4 --max-duration 60
 ```
 
+默认使用保守阈值，优先降低真人口播被误报成 AI 的概率。也可以手动切换：
+
+```bash
+ai-dub-detector analyze ./sample.mp4 --calibration balanced
+ai-dub-detector analyze ./sample.mp4 --calibration sensitive
+```
+
 Apple Silicon Mac 如果 `mps` 有兼容问题，可以强制 CPU：
 
 ```bash
@@ -116,7 +123,7 @@ AI_DUB_ALLOWED_USER_IDS=123456789
 第一版不绑定 Hermes 内部接口。Hermes 只要能调用本地命令，就可以这样用：
 
 ```bash
-/Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "$FILE_PATH"
+/Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "$FILE_PATH" --device cpu --calibration conservative
 ```
 
 `$FILE_PATH` 是 Hermes 下载到本地的视频或音频文件路径。更完整的接入说明在 [docs/hermes.md](docs/hermes.md)。
@@ -147,6 +154,12 @@ AI 配音嫌疑：高
 - `中`：有可疑信号，但音频质量、BGM、压缩或模型泛化都可能影响结果。
 - `低`：当前模型没有发现明显 AI 配音信号。
 - `样本不足`：人声太短或太弱，结果没有参考价值。
+
+阈值模式：
+
+- `conservative`：默认模式，降低误报。适合中文真人口播筛查。
+- `balanced`：更接近普通二分类阈值。
+- `sensitive`：更容易报可疑，适合宁可多查也不想漏掉的场景。
 
 不要把分数当成“AI 概率的真值”。短视频平台的二次压缩、背景音乐、变速、降噪、混响、剪辑都会影响模型。
 

@@ -6,6 +6,7 @@ def test_text_report_contains_core_fields():
     result = AnalysisResult(
         input_path="/tmp/a.mp4",
         model_id="test/model",
+        calibration="conservative",
         risk="高",
         overall_score=0.82,
         max_segment_score=0.91,

@@ -26,6 +26,7 @@ def to_text(result: AnalysisResult) -> str:
         f"有效人声：{result.active_audio_duration:.1f} 秒",
         f"分析片段：{result.segment_count} 段",
         f"模型：{result.model_id}",
+        f"阈值模式：{result.calibration}",
     ]
 
     if result.media_duration:

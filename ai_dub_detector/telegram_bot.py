@@ -14,6 +14,7 @@ def run_bot(
     max_duration: float,
     max_segments: int,
     device: str,
+    calibration: str,
 ) -> None:
     try:
         from telegram import Update
@@ -64,6 +65,7 @@ def run_bot(
                 max_segments,
                 None,
                 device,
+                calibration,
             )
             await status.edit_text(to_text(result)[:3900])
         except Exception as exc:

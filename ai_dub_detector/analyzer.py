@@ -16,6 +16,7 @@ def analyze_file(
     max_segments: int = 12,
     keep_wav: Optional[Path] = None,
     device: str = "auto",
+    calibration: str = "conservative",
 ) -> AnalysisResult:
     input_path = input_path.expanduser().resolve()
     if not input_path.exists():
@@ -64,7 +65,14 @@ def analyze_file(
     return AnalysisResult(
         input_path=str(input_path),
         model_id=model_id,
-        risk=_risk_label(overall_score, max_score, active_audio_duration),
+        calibration=calibration,
+        risk=_risk_label(
+            overall_score,
+            max_score,
+            active_audio_duration,
+            scored_segments,
+            calibration,
+        ),
         overall_score=overall_score,
         max_segment_score=max_score,
         media_duration=media_duration,
@@ -84,12 +92,51 @@ def _weighted_score(segments) -> float:
     return float(sum(seg.ai_probability * seg.duration for seg in segments) / total)
 
 
-def _risk_label(overall_score: float, max_score: float, active_audio_duration: float) -> str:
+def _risk_label(
+    overall_score: float,
+    max_score: float,
+    active_audio_duration: float,
+    segments,
+    calibration: str,
+) -> str:
     if active_audio_duration < 5:
         return "样本不足"
-    if overall_score >= 0.75 or max_score >= 0.88:
+
+    segment_count = len(segments)
+    if segment_count == 0:
+        return "样本不足"
+
+    if calibration == "sensitive":
+        if overall_score >= 0.75 or max_score >= 0.88:
+            return "高"
+        if overall_score >= 0.55 or max_score >= 0.72:
+            return "中"
+        return "低"
+
+    if calibration == "balanced":
+        medium_count = sum(seg.ai_probability >= 0.82 for seg in segments)
+        if overall_score >= 0.82 or (max_score >= 0.92 and medium_count >= 2):
+            return "高"
+        if overall_score >= 0.65 or max_score >= 0.82:
+            return "中"
+        return "低"
+
+    high_count = sum(seg.ai_probability >= 0.90 for seg in segments)
+    medium_count = sum(seg.ai_probability >= 0.80 for seg in segments)
+    high_ratio = high_count / segment_count
+
+    if (
+        active_audio_duration >= 15
+        and high_count >= 2
+        and high_ratio >= 0.35
+        and overall_score >= 0.90
+    ):
         return "高"
-    if overall_score >= 0.55 or max_score >= 0.72:
+    if max_score >= 0.97 and overall_score >= 0.84 and high_count >= 2:
+        return "高"
+    if medium_count >= 2 and overall_score >= 0.80:
+        return "中"
+    if max_score >= 0.93 and overall_score >= 0.70:
         return "中"
     return "低"
 

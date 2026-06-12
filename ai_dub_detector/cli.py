@@ -24,6 +24,12 @@ def main(argv=None) -> int:
     analyze_parser.add_argument("--max-duration", type=float, default=90.0)
     analyze_parser.add_argument("--max-segments", type=int, default=12)
     analyze_parser.add_argument("--device", default="auto", help="auto, cpu, mps 或 cuda")
+    analyze_parser.add_argument(
+        "--calibration",
+        choices=["conservative", "balanced", "sensitive"],
+        default="conservative",
+        help="风险阈值：conservative 降低误报，sensitive 更容易报可疑",
+    )
     analyze_parser.add_argument("--json", action="store_true", help="只输出 JSON")
     analyze_parser.add_argument("--output-json", type=Path, help="保存 JSON 报告")
     analyze_parser.add_argument("--keep-wav", type=Path, help="保留抽取后的 16k mono wav")
@@ -41,6 +47,11 @@ def main(argv=None) -> int:
     telegram_parser.add_argument("--max-duration", type=float, default=90.0)
     telegram_parser.add_argument("--max-segments", type=int, default=12)
     telegram_parser.add_argument("--device", default="auto")
+    telegram_parser.add_argument(
+        "--calibration",
+        choices=["conservative", "balanced", "sensitive"],
+        default="conservative",
+    )
 
     args = parser.parse_args(argv)
 
@@ -53,6 +64,7 @@ def main(argv=None) -> int:
                 max_segments=args.max_segments,
                 keep_wav=args.keep_wav,
                 device=args.device,
+                calibration=args.calibration,
             )
             if args.output_json:
                 save_json(result, args.output_json)
@@ -68,6 +80,7 @@ def main(argv=None) -> int:
                 max_duration=args.max_duration,
                 max_segments=args.max_segments,
                 device=args.device,
+                calibration=args.calibration,
             )
             return 0
     except KeyboardInterrupt:

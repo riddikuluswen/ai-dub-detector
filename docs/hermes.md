@@ -5,7 +5,7 @@
 ## 基本命令
 
 ```bash
-/Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "$FILE_PATH"
+/Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "$FILE_PATH" --device cpu --calibration conservative
 ```
 
 `$FILE_PATH` 是 Hermes 保存到本机的视频或音频文件。
@@ -18,7 +18,7 @@
 当用户发送视频、语音或音频，并要求判断是否 AI 配音时：
 1. 先把文件下载到本地。
 2. 调用：
-   /Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "<本地文件路径>"
+   /Users/eric/个人/AI配音识别器/.venv/bin/ai-dub-detector analyze "<本地文件路径>" --device cpu --calibration conservative
 3. 把命令输出原样回复给用户。
 4. 不要把结果说成定论，只说“嫌疑”或“筛查结果”。
 ```

@@ -24,6 +24,7 @@ class SegmentScore:
 class AnalysisResult:
     input_path: str
     model_id: str
+    calibration: str
     risk: str
     overall_score: float
     max_segment_score: float
